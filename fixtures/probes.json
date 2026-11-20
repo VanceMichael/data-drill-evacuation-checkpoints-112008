@@ -1,0 +1,40 @@
+[
+  {
+    "step": "seal",
+    "path": "/devices/A/memory",
+    "field": [
+      "entries",
+      1,
+      "seq"
+    ],
+    "value": 3
+  },
+  {
+    "step": "reroute",
+    "path": "/drill/transfers",
+    "field": [
+      0,
+      "op"
+    ],
+    "value": "send"
+  },
+  {
+    "step": "catchup",
+    "path": "/drill/transfers",
+    "field": [
+      1,
+      "op"
+    ],
+    "value": "accept"
+  },
+  {
+    "step": "following",
+    "path": "/devices/B/memory",
+    "field": [
+      "entries",
+      0,
+      "card"
+    ],
+    "value": "458"
+  }
+]

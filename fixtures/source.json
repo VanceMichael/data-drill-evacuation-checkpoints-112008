@@ -1,0 +1,330 @@
+{
+  "steps": [
+    "gather",
+    "reroute",
+    "seal",
+    "catchup",
+    "following"
+  ],
+  "routes": {
+    "common": {
+      "GET /drill/rounds": {
+        "status": 200,
+        "body": [
+          {
+            "id": "R10",
+            "start": "09:00:00",
+            "end": "09:25:00",
+            "area": "东厅",
+            "leader": "L1",
+            "checkpoints": [
+              "E1",
+              "E2",
+              "MED"
+            ]
+          },
+          {
+            "id": "R11",
+            "start": "09:25:00",
+            "end": "09:50:00",
+            "area": "西厅",
+            "leader": "L2",
+            "checkpoints": [
+              "E2",
+              "MED"
+            ]
+          }
+        ]
+      },
+      "GET /drill/cards": {
+        "status": 200,
+        "body": [
+          {
+            "card": "458",
+            "person": "X9",
+            "round": "R10",
+            "valid": [
+              "09:00:00",
+              "09:25:00"
+            ]
+          },
+          {
+            "card": "458",
+            "person": "X4",
+            "round": "R11",
+            "valid": [
+              "09:25:00",
+              "09:50:00"
+            ]
+          },
+          {
+            "card": "730",
+            "person": "X3",
+            "round": "R10",
+            "valid": [
+              "09:00:00",
+              "09:25:00"
+            ]
+          },
+          {
+            "card": "501",
+            "person": "X1",
+            "round": "R10",
+            "valid": [
+              "09:00:00",
+              "09:25:00"
+            ]
+          }
+        ]
+      },
+      "GET /devices/index": {
+        "status": 200,
+        "body": [
+          {
+            "device": "A",
+            "boot": "R9",
+            "path": "/devices/A/memory"
+          },
+          {
+            "device": "B",
+            "boot": "F2",
+            "path": "/devices/B/memory"
+          }
+        ]
+      },
+      "GET /devices/calibration": {
+        "status": 200,
+        "body": [
+          {
+            "device": "A",
+            "boot": "R9",
+            "atTick": 0,
+            "earliest": "09:00:02",
+            "latest": "09:00:06",
+            "tickUnit": "second"
+          },
+          {
+            "device": "B",
+            "boot": "F2",
+            "atTick": 0,
+            "earliest": "09:25:00",
+            "latest": "09:25:00",
+            "tickUnit": "second"
+          }
+        ]
+      },
+      "GET /devices/A/memory": {
+        "status": 200,
+        "body": {
+          "through": 3,
+          "end": true,
+          "entries": [
+            {
+              "device": "A",
+              "boot": "R9",
+              "seq": 1,
+              "tick": 60,
+              "card": "458",
+              "point": "E1"
+            },
+            {
+              "device": "A",
+              "boot": "R9",
+              "seq": 3,
+              "tick": 1496,
+              "card": "730",
+              "point": "E2"
+            }
+          ]
+        }
+      },
+      "GET /devices/A/replay?boot=R9&from=2&to=2": {
+        "status": 202,
+        "body": {
+          "state": "pending"
+        }
+      },
+      "GET /devices/B/memory": {
+        "status": 200,
+        "body": {
+          "through": 1,
+          "end": false,
+          "entries": [
+            {
+              "device": "B",
+              "boot": "F2",
+              "seq": 1,
+              "tick": 20,
+              "card": "458",
+              "point": "E2"
+            }
+          ]
+        }
+      },
+      "POST /devices/A/confirm": {
+        "status": 202,
+        "body": {
+          "accepted": true
+        }
+      },
+      "POST /devices/B/confirm": {
+        "status": 202,
+        "body": {
+          "accepted": true
+        }
+      },
+      "GET /drill/transfers": {
+        "status": 200,
+        "body": []
+      }
+    },
+    "gather": {},
+    "reroute": {
+      "GET /drill/transfers": {
+        "status": 200,
+        "body": [
+          {
+            "ref": "MED-2",
+            "op": "send",
+            "round": "R10",
+            "person": "X9",
+            "from": "E1",
+            "to": "MED",
+            "at": "09:06:00",
+            "lead": "L1"
+          }
+        ]
+      }
+    },
+    "seal": {
+      "GET /drill/transfers": {
+        "status": 200,
+        "body": [
+          {
+            "ref": "MED-2",
+            "op": "send",
+            "round": "R10",
+            "person": "X9",
+            "from": "E1",
+            "to": "MED",
+            "at": "09:06:00",
+            "lead": "L1"
+          }
+        ]
+      }
+    },
+    "catchup": {
+      "GET /devices/A/memory": {
+        "status": 200,
+        "body": {
+          "through": 3,
+          "end": true,
+          "entries": [
+            {
+              "device": "A",
+              "boot": "R9",
+              "seq": 3,
+              "tick": 1496,
+              "card": "730",
+              "point": "E2"
+            },
+            {
+              "device": "A",
+              "boot": "R9",
+              "seq": 1,
+              "tick": 60,
+              "card": "458",
+              "point": "E1"
+            },
+            {
+              "device": "A",
+              "boot": "R9",
+              "seq": 2,
+              "tick": 1000,
+              "card": "501",
+              "point": "E2"
+            }
+          ]
+        }
+      },
+      "GET /devices/A/replay?boot=R9&from=2&to=2": {
+        "status": 200,
+        "body": [
+          {
+            "device": "A",
+            "boot": "R9",
+            "seq": 2,
+            "tick": 1000,
+            "card": "501",
+            "point": "E2"
+          }
+        ]
+      },
+      "GET /drill/transfers": {
+        "status": 200,
+        "body": [
+          {
+            "ref": "MED-2",
+            "op": "send",
+            "round": "R10",
+            "person": "X9",
+            "from": "E1",
+            "to": "MED",
+            "at": "09:06:00",
+            "lead": "L1"
+          },
+          {
+            "ref": "MED-2",
+            "op": "accept",
+            "round": "R10",
+            "point": "MED",
+            "at": "09:07:30",
+            "lead": "L8"
+          }
+        ]
+      }
+    },
+    "following": {
+      "GET /devices/A/memory": {
+        "status": 200,
+        "body": {
+          "through": 3,
+          "end": true,
+          "entries": [
+            {
+              "device": "A",
+              "boot": "R9",
+              "seq": 3,
+              "tick": 1496,
+              "card": "730",
+              "point": "E2"
+            }
+          ]
+        }
+      },
+      "GET /drill/transfers": {
+        "status": 200,
+        "body": [
+          {
+            "ref": "MED-2",
+            "op": "send",
+            "round": "R10",
+            "person": "X9",
+            "from": "E1",
+            "to": "MED",
+            "at": "09:06:00",
+            "lead": "L1"
+          },
+          {
+            "ref": "MED-2",
+            "op": "accept",
+            "round": "R10",
+            "point": "MED",
+            "at": "09:07:30",
+            "lead": "L8"
+          }
+        ]
+      }
+    }
+  }
+}
